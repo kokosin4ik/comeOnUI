@@ -1,4 +1,4 @@
-UI for our project
+UI repo for our project
 
 npm start - is running dev server
 
