@@ -4,7 +4,7 @@ const HTMLWebpackPlugin = require("html-webpack-plugin");
 
 module.exports = (env, argv) => ({
   entry: {
-    main: ["./src/app.js"]
+    index: ["./src/index.js"]
   },
   mode: argv.mode !== 'production' ? 'development' : argv.mode,
   output: {
