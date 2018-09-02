@@ -3,8 +3,14 @@
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
+  "engines": {
+    "node": "8.11.3",
+    "npm": "5.6.0"
+  },
   "scripts": {
-    "start": "webpack-dev-server --config=config/webpack.dev.js",
+    "start": "node server.js",
+    "heroku-postbuild": "webpack -p --config=config/webpack.dev.js",
+    "serve": "webpack-dev-server --config=config/webpack.dev.js",
     "build": "webpack --mode=production --config=config/webpack.dev.js",
     "dev": "nodemon --inspect --watch config --watch src/server src/server/main.js"
   },
