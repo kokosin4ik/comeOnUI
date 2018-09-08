@@ -9,7 +9,8 @@ module.exports = (env, argv) => ({
   mode: argv.mode !== 'production' ? 'development' : argv.mode,
   output: {
     filename: "[name]-bundle.js",
-    path: path.resolve(__dirname, "../dist")
+    path: path.resolve(__dirname, "../dist"),
+    publicPath: '/'
   },
   devServer: {
     contentBase: "dist",
@@ -17,7 +18,8 @@ module.exports = (env, argv) => ({
     hot: true,
     stats: {
       colors: true
-    }
+    },
+    historyApiFallback: true,
   },
   devtool: "source-map",
   module: {
