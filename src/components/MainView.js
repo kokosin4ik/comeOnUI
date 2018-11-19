@@ -1,8 +1,21 @@
 import React from "react";
 import { Layout, Breadcrumb } from "antd";
+import { Row, Col } from 'antd';
+import Files from './fileStructure/files';
+import openSocket from 'socket.io-client';
+
+const  socket = openSocket('http://localhost:3000');
 const { Content } = Layout;
 
 export default class MainView extends React.Component {
+  
+  
+  componentDidMount() {
+    socket.on('timer', timestamp => console.log(timestamp));
+    // socket.emit('subscribeToTimer', 1000);
+  }
+  
+  
   render() {
     return (
       <Layout style={{ padding: "0 24px 24px"}}>
@@ -19,7 +32,13 @@ export default class MainView extends React.Component {
             minHeight: 280
           }}
         >
-          Content
+          <Row gutter={16}>
+            <Col span={8}>
+              <Files/>
+            </Col>
+            <Col span={16} />
+          </Row>
+          
         </Content>
       </Layout>
     );

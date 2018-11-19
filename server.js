@@ -1,14 +1,20 @@
-const express = require('express');
+const express = require("express");
 const app = express();
 
-app.use(express.static('dist'));
+var fs = require('fs'),
+  path = require('path')
 
-app.get('*', (req, res) => {
+
+app.use(express.static("dist"));
+
+app.get()
+
+app.get("*", (req, res) => {
   res.sendFile(`${__dirname}/dist/index.html`);
 });
 
 const port = process.env.PORT || 9000;
 
 app.listen(port, () => {
-  console.log('server listening on port: ', port);
+  console.log("server listening on port: ", port);
 });
