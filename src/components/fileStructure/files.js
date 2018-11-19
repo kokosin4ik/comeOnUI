@@ -1,6 +1,7 @@
 import React from "react";
 import { Tree } from 'antd';
 import axios from 'axios';
+import './files.css';
 
 const DirectoryTree = Tree.DirectoryTree;
 const TreeNode = Tree.TreeNode;
@@ -28,7 +29,7 @@ class Files extends React.Component {
   }
   
   onSelect(data, b) {
-    debugger
+    // debugger
     console.log('Trigger Select');
   };
   
@@ -52,14 +53,18 @@ class Files extends React.Component {
       return <TreeNode key={item.name} title={item.name} isLeaf/>;
     });
     return (
-      <DirectoryTree
-        multiple
-        defaultExpandAll
-        onSelect={this.onSelect}
-        onExpand={this.onExpand}
-      >
-        {loop(this.state.data)}
-      </DirectoryTree>
+      <div className='files'>
+        <DirectoryTree
+    
+          multiple
+          defaultExpandAll
+          onSelect={this.onSelect}
+          onExpand={this.onExpand}
+        >
+          {loop(this.state.data)}
+        </DirectoryTree>
+      </div>
+      
     );
   }
 }

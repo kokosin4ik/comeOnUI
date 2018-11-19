@@ -60,7 +60,7 @@ var router = express.Router();              // get an instance of the express Ro
 // });
 
 router.get('/files', function(req, res) {
-  var dirTree = ('./src/');
+  var dirTree = ('./src/components');
   
   diretoryTreeToObj(dirTree, function(err, data){
     if(err)  console.error(err);
@@ -72,7 +72,6 @@ router.get('/files', function(req, res) {
 });
 
 // more routes for our API will happen here
-
 
 
 // REGISTER OUR ROUTES -------------------------------

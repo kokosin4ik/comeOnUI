@@ -5,3 +5,7 @@
     margin: 16px 28px 16px 0;
     float: left;
 }
+
+.ant-tree-icon__customize {
+    padding-top: 4px;
+}

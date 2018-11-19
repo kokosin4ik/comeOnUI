@@ -22,7 +22,6 @@ export default class App extends React.Component {
             <Route exact path='/' component={MainView}/>
             <Route path='/map' component={MapView}/>
           </Switch>
-          <Footer>Footer</Footer>
         </Layout>
       </div>
     );

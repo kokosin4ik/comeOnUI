@@ -1,0 +1,18 @@
+
+
+.no-margin {
+    margin: 0
+}
+
+.main-div {
+    background: #fff;
+    padding: 24px 0 24px 0;
+    margin: 0;
+    /*minHeight: 280px;*/
+    height: 100%;
+}
+
+.window {
+    height: 600px;
+
+}

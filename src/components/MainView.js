@@ -2,6 +2,9 @@ import React from "react";
 import { Layout, Breadcrumb } from "antd";
 import { Row, Col } from 'antd';
 import Files from './fileStructure/files';
+import Controll from './controll/controll';
+import './MainView.css';
+import { Divider } from 'antd';
 import openSocket from 'socket.io-client';
 
 const  socket = openSocket('http://localhost:3000');
@@ -12,35 +15,27 @@ export default class MainView extends React.Component {
   
   componentDidMount() {
     socket.on('timer', timestamp => console.log(timestamp));
-    // socket.emit('subscribeToTimer', 1000);
+    socket.emit('subscribeToTimer', 1000);
   }
   
   
   render() {
     return (
-      <Layout style={{ padding: "0 24px 24px"}}>
-        <Breadcrumb style={{ margin: "16px 0" }}>
-          <Breadcrumb.Item>Home</Breadcrumb.Item>
-          <Breadcrumb.Item>List</Breadcrumb.Item>
-          <Breadcrumb.Item>App</Breadcrumb.Item>
-        </Breadcrumb>
-        <Content
-          style={{
-            background: "#fff",
-            padding: 24,
-            margin: 0,
-            minHeight: 280
-          }}
-        >
-          <Row gutter={16}>
-            <Col span={8}>
-              <Files/>
-            </Col>
-            <Col span={16} />
-          </Row>
-          
-        </Content>
-      </Layout>
+      <div className='main-div'>
+        <Controll>
+        </Controll>
+        <Divider className='no-margin'/>
+        <Row gutter={16} className='window'>
+          <Col span={6}>
+            <Files className="right-border"/>
+          </Col>
+    
+          <Col span={18} />
+        </Row>
+        <Divider className='no-margin'/>
+        
+      </div>
+      
     );
   }
 }
