@@ -1,4 +1,9 @@
 .row {
-    padding: 0 0 20px;
+    padding: 20px 40px 20px 40px;
+    background: #fbfbfb26;
     /*padding: 0 0 20px;*/
+}
+
+.buttons-on-right {
+    text-align: right
 }

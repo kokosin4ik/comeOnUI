@@ -14,12 +14,16 @@ class Controll extends React.Component {
   render() {
     return <div>
       <Row gutter={16} type="flex" justify="end" className="row">
-        <Col span={2}>
-          <Button type="primary">View</Button>
+        <Col span={4} className='buttons-on-right'>
+          <Button type="primary" onClick={this.props.onRunScriptClick}>
+            Run script
+          </Button>
         </Col>
-        <Col span={2}>col-4</Col>
-        <Col span={2}>col-4</Col>
-        <Col span={2}>col-4</Col>
+        <Col span={4} className='buttons-on-right'>
+          <Button type="primary" disabled={!this.props.deployHashes}>
+            Create smart contract
+          </Button>
+        </Col>
       </Row>
     </div>
   }

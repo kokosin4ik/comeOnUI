@@ -1,4 +1,7 @@
 import React from "react";
+import { Spin } from 'antd';
+import { Skeleton } from 'antd';
+
 import { Tree } from 'antd';
 import axios from 'axios';
 import './files.css';
@@ -22,14 +25,16 @@ class Files extends React.Component {
   componentDidMount() {
     axios.get(`http://localhost:8080/api/files`)
     .then(res => {
-      // debugger
-      const data = res.data.message;
+      const data = [{
+        name: 'bin-generator',
+        type: 'folder',
+        children: res.data.message
+      }];
       this.setState({ data, loading: false });
     })
   }
   
-  onSelect(data, b) {
-    // debugger
+  onSelect(data) {
     console.log('Trigger Select');
   };
   
@@ -42,8 +47,10 @@ class Files extends React.Component {
     let { loading, data } = this.state;
     
     if (loading) {
-      return <div>
-        Loading
+      return <div className='files'>
+        <Skeleton active/>
+        <Skeleton active/>
+        <Skeleton active/>
       </div>
     }
     const loop = data => data.map((item) => {

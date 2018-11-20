@@ -14,8 +14,9 @@ export default class HeaderMenu extends React.Component {
           defaultSelectedKeys={["1"]}
           style={{ lineHeight: "64px" }}
         >
-          <Menu.Item key="1"><Link to='/'>Home</Link></Menu.Item>
-          <Menu.Item key="2"><Link to='/map'>Map</Link></Menu.Item>
+          <Menu.Item key="1"><Link to='/'>Deploy in blockchain</Link></Menu.Item>
+          <Menu.Item key="2"><Link to='/map'>Available calculations</Link></Menu.Item>
+          <Menu.Item key="3"><Link to='/map'>Submit results</Link></Menu.Item>
           {/*<Menu.Item key="3">nav 3</Menu.Item>*/}
         </Menu>
       </Header>
