@@ -1,80 +1,111 @@
 import {
-    Upload, Button, Icon, message,
+    Form, Select, Input, Button,
 } from 'antd';
 // import reqwest from 'reqwest';
 import React from "react";
 import './UploadFile.css';
+import { Collapse } from 'antd';
+
+const Panel = Collapse.Panel;
+
+const FormItem = Form.Item;
+
+function hasErrors(fieldsError) {
+    return Object.keys(fieldsError).some(field => fieldsError[field]);
+}
+
 
 class UploadFile extends React.Component {
     constructor() {
         super();
 
-        this.state = {
-            fileList: [],
-            uploading: false,
-        }
+        // this.state = {
+        //     fileList: [],
+        //     uploading: false,
+        // }
 
-        // const {uploadFiles} = this.props;
-
-
-
-        this.handleUpload = this.handleUpload.bind(this);
+        this.handleSubmit = this.handleSubmit.bind(this);
     }
 
-    handleUpload(event) {
-        event.preventDefault();
+    handleSubmit(e) {
+        e.preventDefault();
 
-        this.setState({
-            uploading: true,
-        });
-        this.props.uploadFiles(this.filePath.value);
+        this.props.form.validateFields((err, values) => {
+            if (!err) {
+                // this.setState({
+                //     uploading: true,
+                // });
+                this.props.uploadFiles({
+                    path: this.props.form.getFieldValue('filePath'),
+                    key: this.props.form.getFieldValue('keyPath'),
+                });
 
-        this.setState({
-            uploading: false,
+                // this.setState({
+                //     uploading: false,
+                // });
+            }
         });
+    }
+
+    componentDidMount() {
+        // To disabled submit button at the beginning.
+        this.props.form.validateFields();
     }
 
     render() {
-        const { uploading, fileList } = this.state;
-        const props = {
-            onRemove: (file) => {
-                this.setState((state) => {
-                    const index = state.fileList.indexOf(file);
-                    const newFileList = state.fileList.slice();
-                    newFileList.splice(index, 1);
-                    return {
-                        fileList: newFileList,
-                    };
-                });
-            },
-            beforeUpload: (file) => {
+        const {
+            getFieldDecorator, getFieldsError, getFieldError, isFieldTouched,
+        } = this.props.form;
 
-                this.setState(state => ({
-                    fileList: [...state.fileList, file],
-                }));
-                return false;
-            },
-            fileList,
-        };
+        const filePathError = isFieldTouched('filePath') && getFieldError('filePath');
+        const keyPathError = isFieldTouched('keyPath') && getFieldError('keyPath');
 
         return (
-            <form style={{marginLeft:32}} onSubmit={this.handleUpload}>
-                <input
-                    className="path-input"
-                    placeholder="Path to file"
-                    ref={(input) => this.filePath = input}
-                />
-                <Button
-                    type="primary"
-                    onClick={this.handleUpload}
-                    loading={uploading}
-                    style={{ marginTop: 16 }}
-                >
-                    {uploading ? 'Uploading' : 'Encrypt files' }
-                </Button>
-            </form>
+            <Collapse style={{margin: '0 0 16 32'}}>
+                <Panel header="Add new file" key="1">
+                    <Form onSubmit={this.handleSubmit}>
+                        <FormItem
+                            label="File path"
+                            labelCol={{span: 5}}
+                            wrapperCol={{span: 12}}
+                            validateStatus={filePathError ? 'error' : ''}
+                            help={filePathError || ''}
+                        >
+                            {getFieldDecorator('filePath', {
+                                rules: [{required: true, message: 'Please input file path!'}],
+                            })(
+                                <Input/>
+                            )}
+                        </FormItem>
+                        <FormItem
+                            label="Key path"
+                            labelCol={{span: 5}}
+                            wrapperCol={{span: 12}}
+                            validateStatus={keyPathError ? 'error' : ''}
+                            help={keyPathError || ''}
+                        >
+                            {getFieldDecorator('keyPath', {
+                                rules: [{required: true, message: 'Please input key path!'}],
+                            })(
+                                <Input/>
+                            )}
+                        </FormItem>
+                        <FormItem
+                            wrapperCol={{span: 12, offset: 5}}
+                        >
+                            <Button
+                                type="primary"
+                                htmlType="submit"
+                                disabled={hasErrors(getFieldsError())}
+                            >
+                                Add file
+                            </Button>
+                        </FormItem>
+                    </Form>
+                </Panel>
+            </Collapse>
         );
     }
 }
-
-export default UploadFile;
+const UploadFileForm = Form.create()(UploadFile);
+export default UploadFileForm;

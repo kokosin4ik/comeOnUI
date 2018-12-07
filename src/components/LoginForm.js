@@ -35,13 +35,12 @@ class LoginForm extends React.Component {
 
     handleSubmit(e) {
         e.preventDefault();
-        this.props.signIn({
-            name: this.props.form.getFieldValue('userName'),
-            password: this.props.form.getFieldValue('password')
-        });
         this.props.form.validateFields((err, values) => {
             if (!err) {
-                console.log('Received values of form: ', values);
+                this.props.signIn({
+                    name: values.userName,
+                    password: values.password
+                });
             }
         });
     }
@@ -55,7 +54,7 @@ class LoginForm extends React.Component {
         const userNameError = isFieldTouched('userName') && getFieldError('userName');
         const passwordError = isFieldTouched('password') && getFieldError('password');
         return (
-            <Form layout="inline" onSubmit={this.handleSubmit} style={{height: 32, margin: 32}}>
+            <Form layout="inline" onSubmit={this.handleSubmit} style={{height: 32, margin: '16 32 32 32'}}>
                 <FormItem
                     validateStatus={userNameError ? 'error' : ''}
                     help={userNameError || ''}
@@ -88,7 +87,6 @@ class LoginForm extends React.Component {
                     <Button
                         style = {{marginLeft: 4}}
                         type="danger"
-                        htmlType="submit"
                         disabled={hasErrors(getFieldsError())}
                         onClick={this.signUp}
                     >

@@ -1,5 +1,5 @@
 import React from "react";
-import {Layout, Menu, Breadcrumb, Icon} from "antd";
+import {Layout} from "antd";
 import "./app.css";
 import FilesDashboard from "./FilesDashboard";
 import WrappedHorizontalLoginForm from './LoginForm';
@@ -14,7 +14,8 @@ export default class App extends React.Component {
         super();
 
         this.state = {
-            user: {}
+            user: {},
+            errorMessage: ''
         }
 
         this.signIn = this.signIn.bind(this);
@@ -22,28 +23,45 @@ export default class App extends React.Component {
     }
 
     signIn(user) {
-        // fetch('https://mywebsite.com/endpoint/', {
-        //     method: 'POST',
-        //     headers: {
-        //         'Accept': 'application/json',
-        //         'Content-Type': 'application/json',
-        //     },
-        //     body: JSON.stringify(user)
-        // })
-        //     .then(handleResponse)
-        //     .then((data) => {
-        //         const { currencies, totalPages } = data;
-        //
-        //         this.setState({user});
-        //     })
-        //     .catch((error) => {
-        //         console.log("Error");
-        //     });
-        this.setState({user});
+        fetch(`http://localhost:8282/enc/user/login?username=${user.name}&password=${user.password}`, {
+            method: 'POST'
+        })
+            .then(handleResponse)
+            .then((data) => {
+                this.setState({
+                    user: {
+                        id: data.id,
+                        name: data.username
+                    },
+                    errorMessage: ''
+                });
+            })
+            .catch((error) => {
+                this.setState({
+                    errorMessage: error.message
+                });
+            });
     }
 
     signUp(user) {
-        this.setState({user});
+        fetch(`http://localhost:8282/enc/user/reg?username=${user.name}&password=${user.password}`, {
+            method: 'POST'
+        })
+            .then(handleResponse)
+            .then((data) => {
+                this.setState({
+                    user : {
+                        id: data.id,
+                        name: data.username
+                    },
+                    errorMessage: ''
+                });
+            })
+            .catch((error) => {
+                this.setState({
+                    errorMessage: error.message
+                });
+            });
     }
 
     render() {
@@ -53,16 +71,24 @@ export default class App extends React.Component {
                     {
                         this.state.user.name ?
                             <div>
-                                You are logged as {this.state.user.name}.
+                                <h2 style={{margin: '0 0 8 32'}}>You are logged as {this.state.user.name}.</h2>
                                 <FilesDashboard
                                     user = {this.state.user}
                                 />
                             </div>
                             :
-                            <WrappedHorizontalLoginForm
-                                signIn = {this.signIn}
-                                signUp = {this.signUp}
-                            />
+                            <div>
+                                {
+                                    this.state.errorMessage &&
+                                    <div style={{color: 'f5222d', marginLeft: 32}}>
+                                        {this.state.errorMessage}
+                                    </div>
+                                }
+                                <WrappedHorizontalLoginForm
+                                    signIn = {this.signIn}
+                                    signUp = {this.signUp}
+                                />
+                            </div>
                     }
                 </Layout>
             </div>

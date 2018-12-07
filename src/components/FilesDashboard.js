@@ -2,7 +2,8 @@ import React from "react";
 import FileTree from './FileTree';
 import "./FilesDashboard.css";
 import {Button, Icon} from 'antd';
-import UploadFile from './UploadFile';
+import UploadFileForm from './UploadFile';
+import {handleResponse} from './helper';
 
 class FilesDashboard extends React.Component {
     constructor() {
@@ -10,70 +11,94 @@ class FilesDashboard extends React.Component {
 
         this.state = {
             fileList: [],
-            loading: false,
+            message: '',
         }
 
         this.uploadFiles = this.uploadFiles.bind(this);
+        this.doDecrypt = this.doDecrypt.bind(this);
+        this.doEncrypt = this.doEncrypt.bind(this);
     }
 
     componentDidMount() {
-        // debugger
-        // fetch(`${API_URL}/cryptocurrencies?page=${page}&perPage=20`)
-        //     .then(handleResponse)
-        //     .then((data) => {
-        //         const { currencies, totalPages } = data;
-        //
-        //         this.setState({
-        //             currencies,
-        //             loading: false,
-        //             totalPages
-        //         });
-        //     })
-        //     .catch((error) => {
-        //         this.setState({
-        //             error: error.errorMessage,
-        //             loading: false,
-        //         });
-        //     });
+        this.fetchFiles();
     }
 
-    uploadFiles(files) {
-        //todo: Add userID
+    doDecrypt(fileId) {
+        fetch(`http://localhost:8282/enc/file/decrypt?fileId=${fileId}`, {
+            method: 'POST',
+        })
+            .then(handleResponse)
+            .then((file) => {
+                this.setState({
+                    message: `${file.name} has been successfully decrypted`
+                });
+                this.fetchFiles();
+            })
+            .catch((error) => {
+                console.log("Error");
+            });
+    }
 
-        // fetch('https://mywebsite.com/endpoint/', {
-        //     method: 'POST',
-        //     headers: {
-        //         'Accept': 'application/json',
-        //         'Content-Type': 'application/json',
-        //     },
-        //     body: JSON.stringify(user)
-        // })
-        //     .then(handleResponse)
-        //     .then((data) => {
-        //         this.setState({
-        //             fileList: data
-        //         });
-        //     })
-        //     .catch((error) => {
-        //         console.log("Error");
-        //     });
-        this.setState({
-            fileList: this.state.fileList.concat(files)
-        });
+    doEncrypt(fileId) {
+        fetch(`http://localhost:8282/enc/file/encrypt?fileId=${fileId}`, {
+            method: 'POST',
+        })
+            .then(handleResponse)
+            .then((file) => {
+                this.setState({
+                    message: `${file.name} has been successfully encrypted`
+                });
+                this.fetchFiles();
+            })
+            .catch((error) => {
+                console.log("Error");
+            });
+    }
+
+    fetchFiles() {
+        fetch(`http://localhost:8282/enc/user/files?userId=${this.props.user.id}`)
+            .then(handleResponse)
+            .then((fileList) => {
+                this.setState({
+                    fileList
+                });
+            })
+            .catch((error) => {
+                console.log("Error");
+            });
+    }
+
+    uploadFiles(file) {
+        fetch(`http://localhost:8282/enc/file/save?path=${file.path}&userId=${this.props.user.id}`, {
+            method: 'POST',
+        })
+            .then(handleResponse)
+            .then((file) => {
+                this.setState({
+                    message: `${file.name} has been successfully added`
+                });
+                this.fetchFiles();
+            })
+            .catch((error) => {
+                console.log("Error");
+            });
     }
 
     render() {
         return (
             <div style={{width: '40%'}}>
                 <div className="decrypted-tree">
-                    {/*<Button type="primary">*/}
-                    {/*Decrypt<Icon type="right" />*/}
-                    {/*</Button>*/}
-                    <UploadFile
+                    <UploadFileForm
                         uploadFiles={this.uploadFiles}
                     />
+                    {
+                        this.state.message &&
+                        <div style={{margin: '0 0 12 32', color: '#0b8235'}}><i>{this.state.message}</i></div>
+                    }
                     <FileTree
                         fileList={this.state.fileList}
+                        doEncrypt={this.doEncrypt}
+                        doDecrypt={this.doDecrypt}
                     />
 
                 </div>
