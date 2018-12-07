@@ -1,29 +1,71 @@
 import React from "react";
-import { Layout, Menu, Breadcrumb, Icon } from "antd";
+import {Layout, Menu, Breadcrumb, Icon} from "antd";
 import "./app.css";
-import { Switch, Route } from 'react-router-dom';
-import HeaderMenu from './HeaderMenu';
-import MainView from './MainView';
-import MapView from './MapView';
-
+import FilesDashboard from "./FilesDashboard";
+import WrappedHorizontalLoginForm from './LoginForm';
+import {handleResponse} from './helper';
 
 // const { SubMenu } = Menu;
-const { Footer } = Layout;
+const {Footer} = Layout;
 // const { Link } = ReactRouterDOM;
 
 export default class App extends React.Component {
-  render() {
-    return (
-      <div style={{height: '100%'}}>
-        <Layout style={{height: '100%'}}>
-          <HeaderMenu />
-          <Switch>
-            <Route exact path='/' component={MainView}/>
-            <Route path='/map' component={MapView}/>
-          </Switch>
-          <Footer>Footer</Footer>
-        </Layout>
-      </div>
-    );
-  }
+    constructor() {
+        super();
+
+        this.state = {
+            user: {}
+        }
+
+        this.signIn = this.signIn.bind(this);
+        this.signUp = this.signUp.bind(this);
+    }
+
+    signIn(user) {
+        // fetch('https://mywebsite.com/endpoint/', {
+        //     method: 'POST',
+        //     headers: {
+        //         'Accept': 'application/json',
+        //         'Content-Type': 'application/json',
+        //     },
+        //     body: JSON.stringify(user)
+        // })
+        //     .then(handleResponse)
+        //     .then((data) => {
+        //         const { currencies, totalPages } = data;
+        //
+        //         this.setState({user});
+        //     })
+        //     .catch((error) => {
+        //         console.log("Error");
+        //     });
+        this.setState({user});
+    }
+
+    signUp(user) {
+        this.setState({user});
+    }
+
+    render() {
+        return (
+            <div style={{height: '100%'}}>
+                <Layout style={{height: '100%'}}>
+                    {
+                        this.state.user.name ?
+                            <div>
+                                You are logged as {this.state.user.name}.
+                                <FilesDashboard
+                                    user = {this.state.user}
+                                />
+                            </div>
+                            :
+                            <WrappedHorizontalLoginForm
+                                signIn = {this.signIn}
+                                signUp = {this.signUp}
+                            />
+                    }
+                </Layout>
+            </div>
+        );
+    }
 }
