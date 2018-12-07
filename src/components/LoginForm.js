@@ -30,7 +30,10 @@ class LoginForm extends React.Component {
     }
 
     signUp() {
-        this.props.signUp({name: this.props.form.getFieldValue('userName')});
+        this.props.signUp({
+            name: this.props.form.getFieldValue('userName'),
+            password: this.props.form.getFieldValue('password')
+        });
     }
 
     handleSubmit(e) {
