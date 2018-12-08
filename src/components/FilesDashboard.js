@@ -78,7 +78,7 @@ class FilesDashboard extends React.Component {
     }
 
     uploadFiles(file) {
-        fetch(`http://localhost:8282/enc/file/save?path=${file.path}&userId=${this.props.user.id}`, {
+        fetch(`http://localhost:8282/enc/file/save?path=${file.path}&keyPath=${file.key}}&userId=${this.props.user.id}`, {
             method: 'POST',
         })
             .then(handleResponse)
