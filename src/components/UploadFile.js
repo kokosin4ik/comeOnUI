@@ -1,5 +1,5 @@
 import {
-    Form, Select, Input, Button,
+    Form, Select, Input, Button, Icon
 } from 'antd';
 // import reqwest from 'reqwest';
 import React from "react";
@@ -35,10 +35,7 @@ class UploadFile extends React.Component {
                 // this.setState({
                 //     uploading: true,
                 // });
-                this.props.uploadFiles({
-                    path: this.props.form.getFieldValue('filePath'),
-                    key: this.props.form.getFieldValue('keyPath'),
-                });
+                this.props.uploadFiles(this.props.form.getFieldValue('filePath'));
 
                 // this.setState({
                 //     uploading: false,
@@ -58,11 +55,10 @@ class UploadFile extends React.Component {
         } = this.props.form;
 
         const filePathError = isFieldTouched('filePath') && getFieldError('filePath');
-        const keyPathError = isFieldTouched('keyPath') && getFieldError('keyPath');
 
         return (
             <Collapse style={{margin: '0 0 16 32'}}>
-                <Panel header="Add new file" key="1">
+                <Panel header="Encrypt new file" key="1">
                     <Form onSubmit={this.handleSubmit}>
                         <FormItem
                             label="File path"
@@ -78,19 +74,6 @@ class UploadFile extends React.Component {
                             )}
                         </FormItem>
                         <FormItem
-                            label="Key path"
-                            labelCol={{span: 5}}
-                            wrapperCol={{span: 12}}
-                            validateStatus={keyPathError ? 'error' : ''}
-                            help={keyPathError || ''}
-                        >
-                            {getFieldDecorator('keyPath', {
-                                rules: [{required: true, message: 'Please input key path!'}],
-                            })(
-                                <Input/>
-                            )}
-                        </FormItem>
-                        <FormItem
                             wrapperCol={{span: 12, offset: 5}}
                         >
                             <Button
@@ -98,7 +81,8 @@ class UploadFile extends React.Component {
                                 htmlType="submit"
                                 disabled={hasErrors(getFieldsError())}
                             >
-                                Add file
+                                Encrypt file
+                                <Icon type="right" />
                             </Button>
                         </FormItem>
                     </Form>

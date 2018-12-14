@@ -15,7 +15,6 @@ class FilesDashboard extends React.Component {
             errorMessage: ''
         }
 
-        this.uploadFiles = this.uploadFiles.bind(this);
         this.doDecrypt = this.doDecrypt.bind(this);
         this.doEncrypt = this.doEncrypt.bind(this);
     }
@@ -29,9 +28,9 @@ class FilesDashboard extends React.Component {
             method: 'POST',
         })
             .then(handleResponse)
-            .then((file) => {
+            .then(() => {
                 this.setState({
-                    message: `${file.name} has been successfully decrypted`,
+                    message: `File has been successfully decrypted`,
                     errorMessage: ''
                 });
                 this.fetchFiles();
@@ -44,14 +43,14 @@ class FilesDashboard extends React.Component {
             });
     }
 
-    doEncrypt(fileId) {
-        fetch(`http://localhost:8282/enc/file/encrypt?fileId=${fileId}`, {
+    doEncrypt(filePath) {
+        fetch(`http://localhost:8282/enc/file/encrypt?userId=${this.props.user.id}&filePath=${filePath}`, {
             method: 'POST',
         })
             .then(handleResponse)
-            .then((file) => {
+            .then(() => {
                 this.setState({
-                    message: `${file.name} has been successfully encrypted`,
+                    message: `File has been successfully encrypted`,
                     errorMessage: ''
                 });
                 this.fetchFiles();
@@ -77,32 +76,12 @@ class FilesDashboard extends React.Component {
             });
     }
 
-    uploadFiles(file) {
-        fetch(`http://localhost:8282/enc/file/save?path=${file.path}&keyPath=${file.key}&userId=${this.props.user.id}`, {
-            method: 'POST',
-        })
-            .then(handleResponse)
-            .then((file) => {
-                this.setState({
-                    message: `${file.name} has been successfully added`,
-                    errorMessage: ''
-                });
-                this.fetchFiles();
-            })
-            .catch((error) => {
-                this.setState({
-                    message: '',
-                    errorMessage: error.message
-                });
-            });
-    }
-
     render() {
         return (
             <div style={{width: '40%'}}>
                 <div className="decrypted-tree">
                     <UploadFileForm
-                        uploadFiles={this.uploadFiles}
+                        uploadFiles={this.doEncrypt}
                     />
                     {
                         this.state.message &&
@@ -116,7 +95,6 @@ class FilesDashboard extends React.Component {
                     }
                     <FileTree
                         fileList={this.state.fileList}
-                        doEncrypt={this.doEncrypt}
                         doDecrypt={this.doDecrypt}
                     />
 

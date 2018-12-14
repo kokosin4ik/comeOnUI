@@ -33,7 +33,7 @@ class FileTree extends React.Component {
                 <Button
                     type="primary"
                     style={{marginLeft:32}}
-                    disabled = {this.state.selectedFile.status !== 'ENCRYPTED'}
+                    disabled = {!this.state.selectedFile.id}
                     onClick={
                         () => {
                             this.props.doDecrypt(this.state.selectedFile.id);
@@ -45,21 +45,6 @@ class FileTree extends React.Component {
                 >
                     <Icon type="left" />Decrypt
                 </Button>
-                <Button
-                    type="primary"
-                    style={{marginLeft:16}}
-                    disabled = {this.state.selectedFile.status !== 'DECRYPTED'}
-                    onClick={
-                        () => {
-                            this.props.doEncrypt(this.state.selectedFile.id);
-                            this.setState({
-                                selectedFile: {}
-                            })
-                        }
-                    }
-                >
-                    Encrypt<Icon type="right" />
-                </Button>
                 <DirectoryTree
                     defaultExpandAll
                     onSelect={this.onSelect}
@@ -70,7 +55,7 @@ class FileTree extends React.Component {
                         {
                             this.props.fileList.length &&
                             this.props.fileList.map((file) => (
-                                <TreeNode title={file.name + ' -- ' + file.status} key={file.id} isLeaf />
+                                <TreeNode title={file.name} key={file.id} isLeaf />
                             ))
                         }
                     </TreeNode>

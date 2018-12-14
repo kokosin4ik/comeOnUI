@@ -32,7 +32,9 @@ class LoginForm extends React.Component {
     signUp() {
         this.props.signUp({
             name: this.props.form.getFieldValue('userName'),
-            password: this.props.form.getFieldValue('password')
+            password: this.props.form.getFieldValue('password'),
+            keyPath: this.props.form.getFieldValue('keyPath'),
+            flashPath: this.props.form.getFieldValue('flashPath')
         });
     }
 
@@ -42,7 +44,9 @@ class LoginForm extends React.Component {
             if (!err) {
                 this.props.signIn({
                     name: values.userName,
-                    password: values.password
+                    password: values.password,
+                    keyPath: values.keyPath,
+                    flashPath: values.flashPath
                 });
             }
         });
@@ -56,8 +60,11 @@ class LoginForm extends React.Component {
         // Only show error after a field is touched.
         const userNameError = isFieldTouched('userName') && getFieldError('userName');
         const passwordError = isFieldTouched('password') && getFieldError('password');
+        const keyPathError = isFieldTouched('keyPath') && getFieldError('keyPath');
+        const flashPathError = isFieldTouched('flashPath') && getFieldError('flashPath');
+
         return (
-            <Form layout="inline" onSubmit={this.handleSubmit} style={{height: 32, margin: '16 32 32 32'}}>
+            <Form onSubmit={this.handleSubmit} style={{width: '30%', height: 32, margin: '16 32 32 32'}}>
                 <FormItem
                     validateStatus={userNameError ? 'error' : ''}
                     help={userNameError || ''}
@@ -76,6 +83,26 @@ class LoginForm extends React.Component {
                         rules: [{ required: true, message: 'Please input your Password!' }],
                     })(
                         <Input prefix={<Icon type="lock" style={{ color: 'rgba(0,0,0,.25)' }} />} type="password" placeholder="Password" />
+                    )}
+                </FormItem>
+                <FormItem
+                    validateStatus={keyPathError ? 'error' : ''}
+                    help={keyPathError || ''}
+                >
+                    {getFieldDecorator('keyPath', {
+                        rules: [{required: true, message: 'Please input key path!'}],
+                    })(
+                        <Input prefix={<Icon type="lock" style={{ color: 'rgba(0,0,0,.25)' }} />} placeholder="Key path"/>
+                    )}
+                </FormItem>
+                <FormItem
+                    validateStatus={flashPathError ? 'error' : ''}
+                    help={flashPathError || ''}
+                >
+                    {getFieldDecorator('flashPath', {
+                        rules: [{required: true, message: 'Please input flash path!'}],
+                    })(
+                        <Input prefix={<Icon type="lock" style={{ color: 'rgba(0,0,0,.25)' }} />} placeholder="Flash path"/>
                     )}
                 </FormItem>
                 <FormItem>

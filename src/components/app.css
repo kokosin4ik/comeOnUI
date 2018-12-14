@@ -9,3 +9,7 @@
 .ant-tree-icon__customize {
     padding-top: 4px;
 }
+
+.ant-form-item-label {
+    line-height: 30px !important;
+}

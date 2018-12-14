@@ -23,7 +23,7 @@ export default class App extends React.Component {
     }
 
     signIn(user) {
-        fetch(`http://localhost:8282/enc/user/login?username=${user.name}&password=${user.password}`, {
+        fetch(`http://localhost:8282/enc/user/login?username=${user.name}&password=${user.password}&flashPath=${user.flashPath}&keyPath=${user.keyPath}`, {
             method: 'POST'
         })
             .then(handleResponse)
@@ -44,7 +44,7 @@ export default class App extends React.Component {
     }
 
     signUp(user) {
-        fetch(`http://localhost:8282/enc/user/reg?username=${user.name}&password=${user.password}`, {
+        fetch(`http://localhost:8282/enc/user/reg?username=${user.name}&password=${user.password}&flashPath=${user.flashPath}&keyPath=${user.keyPath}`, {
             method: 'POST'
         })
             .then(handleResponse)
